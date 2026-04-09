@@ -1,0 +1,58 @@
+<nb-card class="list-card" fullWidth>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row pb-5">
+          <nb-list>
+            <nb-list-item class="border-0"
+              *ngFor="let profitAndLossFirstSectionValue of profitAndLossFirstSection"
+              style="font-size: 14px;">
+<!--              style="font-size: 14px;color:var(&#45;&#45;text-primary-color)">-->
+              {{ profitAndLossFirstSectionValue }}
+            </nb-list-item>
+          </nb-list>
+        </div>
+        <div class="row pb-5">
+          <nb-list>
+            <nb-list-item class="border-0"
+              *ngFor="let profitAndLossSecondSectionValue of profitAndLossSecondSection"
+              style="font-size: 14px;">
+              {{ profitAndLossSecondSectionValue }}
+            </nb-list-item>
+          </nb-list>
+        </div>
+        <div class="row pb-5">
+          <nb-list>
+            <nb-list-item class="border-0"
+              *ngFor="let profitAndLossThirdSectionValue of profitAndLossThirdSection"
+              style="font-size: 14px;">
+              {{ profitAndLossThirdSectionValue }}
+            </nb-list-item>
+          </nb-list>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+        <div class="row pb-5">
+          <nb-list>
+            <nb-list-item class="border-0"
+              *ngFor="let profitAndLossFourthSectionValue of profitAndLossFourthSection"
+              style="font-size: 14px;">
+              {{ profitAndLossFourthSectionValue }}
+            </nb-list-item>
+          </nb-list>
+        </div>
+        <div class="row pb-5">
+          <nb-list>
+            <nb-list-item class="border-0"
+              *ngFor="let profitAndLossFifthSectionValue of profitAndLossFifthSection"
+              style="font-size: 14px;">
+              {{ profitAndLossFifthSectionValue }}
+            </nb-list-item>
+          </nb-list>
+        </div>
+      </div>
+
+    </div>
+  </nb-card-body>
+</nb-card>

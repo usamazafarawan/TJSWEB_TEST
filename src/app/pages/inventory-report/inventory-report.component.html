@@ -1,0 +1,196 @@
+<div>
+  <div class="d-flex flex-wrap  justify-content-between " [nbSpinner]="filtersLoaded !== true" nbSpinnerSize="giant"
+       nbSpinnerStatus="primary">
+    <div class="form-group px-2 ">
+      <label class="label">Item Entry Date</label>
+      <div class="d-flex align-items-center">
+        <div>
+          <!--          <button nbButton status="primary" class="p-1">All Dates</button>-->
+          <nb-checkbox class="appearance-filled full-width size-medium shape-rectangle status-primary nb-transition"
+                       [(ngModel)]="allDates" [(checked)]="allDates">
+            All Dates
+          </nb-checkbox>
+
+        </div>
+        <div class="ml-2">
+          <div class="form-group">
+            <label class="label mr-2">From</label>
+            <input nbInput [nbDatepicker]="fromdatepicker" [(ngModel)]="fromDate" fieldSize="small">
+          </div>
+          <div class="form-group">
+            <label class="label mr-4">To</label>
+            <input nbInput [nbDatepicker]="todatepicker" [(ngModel)]="toDate" fieldSize="small">
+          </div>
+          <nb-datepicker #fromdatepicker></nb-datepicker>
+          <nb-datepicker #todatepicker></nb-datepicker>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="form-group mb-1">
+        <label class="label d-block">Category</label>
+        <nb-select fullWidth [(ngModel)]="selectedCategory">
+          <nb-option *ngFor="let category of categories" [value]="category['ID']">{{ category['Category'] }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">Description</label>
+        <input nbInput name="description" [(ngModel)]="description">
+      </div>
+    </div>
+    <div>
+      <div class="form-group mb-1">
+        <label class="label d-block">Suppliers</label>
+        <nb-select fullWidth [(ngModel)]="selectedSupplier">
+          <nb-option *ngFor="let supplier of suppliers" [value]="supplier['ID']">{{ supplier['Name'] }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">Barcode</label>
+        <input nbInput name="barcode" [(ngModel)]="barcode">
+      </div>
+    </div>
+    <div>
+      <div class="form-group mb-1">
+        <label class="label d-block">Collection</label>
+        <nb-select fullWidth [(ngModel)]="selectedCollection">
+          <nb-option *ngFor="let col of collections" [value]="col">{{ col }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">Model</label>
+        <input nbInput name="model" [(ngModel)]="model">
+      </div>
+    </div>
+    <div>
+      <div class="form-group mb-1">
+        <label class="label d-block">Warehouse</label>
+        <nb-select fullWidth [(ngModel)]="selectedWarehouse">
+          <nb-option *ngFor="let col of warehouses" [value]="col">{{ col }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">External Ref #</label>
+        <input nbInput name="extRefNo" [(ngModel)]="extRefNo">
+      </div>
+    </div>
+    <div class="mb-2">
+      <nb-checkbox [(ngModel)]="excludeOthers" [(checked)]="excludeOthers">Exclude Other</nb-checkbox>
+      <div class="mb-2">
+        <button type="submit" nbButton status="primary" [disabled]="loadingReports || loadingCategories" fullWidth
+                (click)="loadReports()">
+          <div *ngIf="loadingReports" class="spinner-border spinner-border-sm text-light" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <span *ngIf="!loadingReports">Load Report</span>
+        </button>
+      </div>
+      <div class="mb-2">
+        <button nbButton status="primary" [disabled]="loadingCategories || loadingReports" fullWidth
+                (click)="loadReportPerCategory()">
+          <div *ngIf="loadingCategories" class="spinner-border spinner-border-sm text-light" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <span *ngIf="!loadingCategories">Load Per Category</span>
+        </button>
+      </div>
+      <div class="mb-2">
+        <button nbButton status="primary" fullWidth (click)="clearFilters()"
+                [disabled]="loadingCategories || loadingReports">
+          Clear Filters
+        </button>
+      </div>
+    </div>
+    <div class="d-flex flex-wrap">
+      <div class="mb-2">
+        <label class="label">Type</label>
+        <nb-radio-group name="type" [(ngModel)]="type">
+          <nb-radio value="all"> All</nb-radio>
+          <nb-radio value="diamond">Diamond Items</nb-radio>
+          <nb-radio value="gold">Gold Items</nb-radio>
+        </nb-radio-group>
+      </div>
+      <div class="mb-2 mx-5">
+        <label class="label">Currency</label>
+        <nb-radio-group name="currency" [(ngModel)]="currency">
+          <nb-radio value="all"> All</nb-radio>
+          <nb-radio value="primary">Primary</nb-radio>
+          <nb-radio value="secondary">Secondary</nb-radio>
+        </nb-radio-group>
+      </div>
+      <div class="mb-2">
+        <label class="label">Quantity</label>
+        <nb-radio-group name="quantity" [(ngModel)]="quantity">
+          <nb-radio value="greaterThanZero"> > 0</nb-radio>
+          <nb-radio value="all">All</nb-radio>
+          <nb-radio value="lessThanNumber">
+            <= <input [disabled]="quantity !== 'lessThanNumber'" nbInput class="w-25 border" fieldSize="small"
+                      name="quantityLessThan" [(ngModel)]="quantityLessThan" placeholder="0">
+          </nb-radio>
+        </nb-radio-group>
+      </div>
+    </div>
+  </div>
+  <div style="overflow-x: auto">
+    <nb-card>
+      <nb-card-body class="text-center">
+        <ng2-smart-table [settings]="inventoryReportTableSettings" [source]="inventoryReportTableSources">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="d-flex flex-wrap justify-content-between">
+    <div class="d-flex flex-wrap  ">
+      <div>
+        <div class="form-group mb-1">
+          <label class="label d-block">EQUIV 18K (G)</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Equivalent_18">
+        </div>
+        <div class="form-group">
+          <label class="label d-block">EQUIV 995 (G)</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Equivalent_995">
+        </div>
+      </div>
+      <div>
+        <div class="form-group mb-1">
+          <label class="label d-block">EQUIV Silver (G)</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Equivalent_Silver">
+        </div>
+        <div class="form-group">
+          <label class="label d-block">EQUIV Platinum (G)</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Equivalent_Platinum">
+        </div>
+      </div>
+      <div>
+        <div class="form-group mb-1">
+          <label class="label d-block">Labour Cost</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Total_Labor_Cost_Price">
+        </div>
+        <div class="form-group">
+          <label class="label d-block">Carats</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Total_Carats">
+        </div>
+      </div>
+      <div>
+        <div class="form-group mb-1">
+          <label class="label d-block">Stones Cost</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Total_Stones_Cost_Price">
+        </div>
+        <div class="form-group">
+          <label class="label d-block">Overall Cost</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Total_Cost">
+        </div>
+      </div>
+      <div>
+        <div class="form-group mb-1">
+          <label class="label d-block">Total Qty</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Total_Qty">
+        </div>
+        <div class="form-group mb-1">
+          <label class="label d-block">Total Estimate Selling</label>
+          <input nbInput fieldSize="small" readonly [value]="T_Total_Selling_Price">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

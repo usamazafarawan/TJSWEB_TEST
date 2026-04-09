@@ -1,0 +1,14 @@
+USE [TJSDB]
+GO
+
+CREATE LOGIN [TJSAdministrator] WITH PASSWORD = 'adminTJS$18052023';
+
+USE [TJSDB]
+GO
+
+CREATE USER [TJSAdministrator] FOR LOGIN [TJSAdministrator];
+
+USE [TJSDB]
+GO
+
+ALTER ROLE db_owner ADD MEMBER [TJSAdministrator];

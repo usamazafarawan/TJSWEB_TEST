@@ -1,0 +1,69 @@
+<div [nbSpinner]="isLoading" nbSpinnerSize="giant"
+     nbSpinnerStatus="primary">
+
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="form-group">
+        <label class="label">Warehouse</label>
+        <nb-select fullWidth [(ngModel)]="selectedWarehouse">
+          <nb-option *ngFor="let warehouse of warehouses" [value]="warehouse">{{ warehouse }}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <label class="label">From</label>
+        <input nbInput fullWidth [nbDatepicker]="fromdatepicker" [(ngModel)]="fromDate">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <label class="label">To</label>
+        <input nbInput fullWidth [nbDatepicker]="todatepicker" [(ngModel)]="toDate">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <label class="label">&nbsp;</label>
+      <button type="submit" nbButton status="primary" [disabled]="loadingReports"
+              (click)="loadReports()" fullWidth>
+        <div *ngIf="loadingReports" class="spinner-border spinner-border-sm text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <span *ngIf="!loadingReports">Load</span>
+      </button>
+    </div>
+    <nb-datepicker #fromdatepicker></nb-datepicker>
+    <nb-datepicker #todatepicker></nb-datepicker>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <nb-card>
+        <nb-tabset fullWidth style="overflow-x: auto">
+          <nb-tab tabTitle="SALES">
+            <sales-section [salesScreen]="salesScreen" [netRevenue]="netRevenue"></sales-section>
+          </nb-tab>
+          <nb-tab tabTitle="CASH">
+            <cash-section [cashScreen]="cashScreen" [Secondary_Currency_Feature]="Secondary_Currency_Feature"
+            [Secondary_Currency_Label]="Secondary_Currency_Label"></cash-section>
+          </nb-tab>
+          <nb-tab tabTitle="EXPENSES">
+            <expenses-section [expenseData]="expenseScreen" [Secondary_Currency_Label]="Secondary_Currency_Label"></expenses-section>
+          </nb-tab>
+          <nb-tab tabTitle="REPAIRS">
+            <repairs-section [repairScreen]="repairScreen"></repairs-section>
+          </nb-tab>
+          <nb-tab tabTitle="GOLD PURCHASES">
+            <gold-purchases-section [goldScreenData]="goldPurchaseScreen"></gold-purchases-section>
+          </nb-tab>
+          <nb-tab tabTitle="ADJUSTMENTS">
+            <adjustments-section [adjustments]="adjustmentScreen"></adjustments-section>
+          </nb-tab>
+          <nb-tab tabTitle="P & L">
+            <profit-loss-section [profitLoss]="profitLoss"></profit-loss-section>
+          </nb-tab>
+        </nb-tabset>
+      </nb-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,227 @@
+<div>
+  <div class="d-flex flex-wrap" [nbSpinner]="loadingFilters === true" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+    <!--    field column 1-->
+    <div>
+      <div class="form-group">
+        <label class="label d-block">Description</label>
+        <input nbInput [(ngModel)]="description">
+      </div>
+      <div class="d-flex">
+        <div class="form-group mr-2" style="width: 100px;">
+          <label class="label d-block">Barcode</label>
+          <input nbInput [(ngModel)]="barcode" class="w-100">
+        </div>
+        <div class="form-group mr-2" style="width: 100px;">
+          <label class="label d-block text-right">INV /RET#</label>
+          <input nbInput [(ngModel)]="invoiceNo" class="w-100">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">Sales Source</label>
+        <input nbInput [(ngModel)]="salesSources">
+      </div>
+    </div>
+    <!--    field column 2-->
+    <div class="mx-2">
+      <div class="form-group">
+        <label class="label d-block">Category</label>
+        <nb-select fullWidth [(ngModel)]="selectedCategory">
+          <nb-option *ngFor="let category of categories" [value]="category['ID']">{{ category['Category'] }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">Suppliers</label>
+        <nb-select fullWidth [(ngModel)]="selectedSupplier">
+          <nb-option *ngFor="let supplier of suppliers" [value]="supplier['ID']">{{ supplier['Name'] }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">Model</label>
+        <input nbInput [(ngModel)]="model">
+      </div>
+    </div>
+    <!--    field column 3-->
+    <div>
+      <div class="form-group">
+        <label class="label d-block">Collection</label>
+        <nb-select fullWidth [(ngModel)]="selectedCollection">
+          <nb-option *ngFor="let col of collections" [value]="col">{{ col }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">Warehouse</label>
+        <nb-select fullWidth [(ngModel)]="selectedWarehouse">
+          <nb-option *ngFor="let col of warehouses" [value]="col">{{ col }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <label class="label d-block">External Ref #</label>
+        <input nbInput [(ngModel)]="extRefNo">
+      </div>
+    </div>
+    <!--    Radio Buttons-->
+    <div class="ml-4">
+      <div class="form-group">
+        <label class="label">Inventory</label>
+        <nb-radio-group [(ngModel)]="type">
+          <nb-radio value="all">All</nb-radio>
+          <nb-radio value="services">Services</nb-radio>
+          <nb-radio value="gems">Gems</nb-radio>
+          <nb-radio value="gold">Gold</nb-radio>
+          <nb-radio value="diamond">Diamonds</nb-radio>
+        </nb-radio-group>
+      </div>
+    </div>
+    <!--    Dates-->
+    <div>
+      <div class="form-group">
+        <label class="label mr-2">From</label>
+        <input nbInput [nbDatepicker]="fromdatepicker" [(ngModel)]="fromDate">
+      </div>
+      <div class="form-group">
+        <label class="label mr-4">To</label>
+        <input nbInput [nbDatepicker]="todatepicker" [(ngModel)]="toDate">
+      </div>
+      <div>
+        <div class="form-group">
+          <nb-checkbox [(ngModel)]="reportWithImages" [(checked)]="reportWithImages">Report with images</nb-checkbox>
+        </div>
+        <div class="form-group">
+          <nb-checkbox [(ngModel)]="excludeOpenOrders" [(checked)]="excludeOpenOrders">Exclude open orders</nb-checkbox>
+        </div>
+      </div>
+      <nb-datepicker #fromdatepicker></nb-datepicker>
+      <nb-datepicker #todatepicker></nb-datepicker>
+    </div>
+    <!--    Buttons-->
+    <div class="d-flex flex-wrap">
+      <div class="mx-2">
+        <div class="mb-2">
+          <button type="submit" nbButton status="primary" [disabled]="loadReport !== null"
+                  fullWidth (click)="loadSales()">
+            <div *ngIf="loadReport === 'sales'" class="spinner-border spinner-border-sm text-light" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span *ngIf="loadReport !== 'sales'">Load Sales Details</span>
+          </button>
+        </div>
+        <div class="mb-2">
+          <button type="submit" nbButton status="primary" fullWidth (click)="loadSales2()"
+                  [disabled]="loadReport !== null">
+            <div *ngIf="loadReport === 'sales2'" class="spinner-border spinner-border-sm text-light" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span *ngIf="loadReport !== 'sales2'">Load Sales Details 2</span>
+          </button>
+        </div>
+        <div class="mb-2">
+          <button type="submit" nbButton status="primary" fullWidth [disabled]="loadReport !== null"
+                  (click)="loadSalesPerSource()">
+            <div *ngIf="loadReport === 'perSource'" class="spinner-border spinner-border-sm text-light" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span *ngIf="loadReport !== 'perSource'">Load Sales Per Source</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mx-2">
+        <div class="mb-2">
+
+          <button type="submit" nbButton status="primary" fullWidth (click)="loadSalesPerClient()"
+                  [disabled]="loadReport !== null">
+            <div *ngIf="loadReport === 'perClient'" class="spinner-border spinner-border-sm text-light" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span *ngIf="loadReport !== 'perClient'">Load Sales Per Client</span>
+          </button>
+        </div>
+        <div class="mb-2">
+          <button type="submit" nbButton status="primary" fullWidth (click)="loadSalesGroupedCategory()"
+                  [disabled]="loadReport !== null">
+            <div *ngIf="loadReport === 'perCategory'" class="spinner-border spinner-border-sm text-light" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span *ngIf="loadReport !== 'perCategory'">Load Grouped Category</span>
+          </button>
+        </div>
+        <div class="mb-2">
+          <button type="submit" nbButton status="primary" fullWidth (click)="loadSalesPerSupplier()"
+                  [disabled]="loadReport !== null">
+            <div *ngIf="loadReport === 'perSupplier'" class="spinner-border spinner-border-sm text-light" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span *ngIf="loadReport !== 'perSupplier'">Load Sales Per Supplier</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <!-- Table -->
+  <div class="row">
+    <div class="col-md-12" style="overflow-x: auto">
+      <nb-card>
+        <nb-card-body class="text-center">
+          <ng2-smart-table [settings]="salesReportTableSettings" [source]="salesReportTableSource">
+          </ng2-smart-table>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class=" col-md-12 d-flex justify-content-between flex-wrap">
+      <div class="d-flex flex-wrap">
+        <div>
+          <div class="form-group">
+            <label class="label d-block">Total Sales</label>
+            <input [value]="T_Total_Sales" readonly nbInput fieldSize="small">
+          </div>
+          <div class="form-group">
+            <label class="label d-block">Total Cost</label>
+            <input [value]="T_Total_Costs" readonly nbInput fieldSize="small">
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <label class="label d-block">Total Revenue</label>
+            <input [value]="T_Total_Revenue" readonly nbInput fieldSize="small">
+          </div>
+          <div class="form-group">
+            <label class="label d-block">Revenue %</label>
+            <input [value]="T_Total_Revenue_Percentage" readonly nbInput fieldSize="small">
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <label class="label d-block">Total Gold</label>
+            <input [value]="T_Total_Gold" readonly nbInput fieldSize="small">
+          </div>
+          <div class="form-group">
+            <label class="label d-block">Total Platinum</label>
+            <input [value]="T_TOTAL_PLATINUM" readonly nbInput fieldSize="small">
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <label class="label d-block">Total Qty</label>
+            <input [value]="T_Total_Qty" readonly nbInput fieldSize="small">
+          </div>
+          <div class="form-group">
+            <label class="label d-block">Total Silver</label>
+            <input [value]="T_TOTAL_SILVER" readonly nbInput fieldSize="small">
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <label class="label d-block">Total Tax</label>
+            <input [value]="T_Total_Tax" readonly nbInput fieldSize="small">
+          </div>
+          <div class="form-group">
+            <label class="label d-block">Sales After Returns</label>
+            <input [value]="T_TOTAL_SALES_AFTER_RETURNS" readonly nbInput fieldSize="small">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

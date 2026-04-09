@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header class="text-center">
+        <span class="title" style="font-size: 14px;color:var(--text-primary-color)">CLIENT RECEIPT VOUCHERS</span>
+      </nb-card-header>
+      <nb-card-body class="text-center">
+        <ng2-smart-table [settings]="clientReceiptVouchersTableSettings" [source]="clientReceiptVouchersTableSource">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header class="text-center">
+        <span class="title" style="font-size: 14px;color:var(--text-primary-color)">SUPPLIERS / ACCOUNTS PAYMENT
+          VOUCHERS</span>
+      </nb-card-header>
+      <nb-card-body class="text-center">
+        <ng2-smart-table [settings]="paymentVouchersTableSettings" [source]="paymentVouchersTableSource">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3">
+  </div>
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header class="text-center">
+        <span class="title" style="font-size: 14px;color:var(--text-primary-color)">CLIENTS PAYMENT VOUCHERS</span>
+      </nb-card-header>
+      <nb-card-body class="text-center">
+        <ng2-smart-table [settings]="clientsPaymentVoucherTableSettings" [source]="clientsPaymentVoucherTableSource">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-3">
+  </div>
+</div>

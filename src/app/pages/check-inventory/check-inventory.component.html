@@ -1,0 +1,137 @@
+<div [nbSpinner]="loadingRecord" nbSpinnerSize="giant"
+     nbSpinnerStatus="primary">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label class="label d-block">Ref Number</label>
+
+        <div style="position: relative;">
+          <input
+            nbInput
+            name="ref"
+            fullWidth
+            (keydown)="handleOnKeyPress($event)"
+            [(ngModel)]="referenceNumber"
+            style="padding-right: 44px;"
+          >
+
+          <button
+            nbButton
+            ghost
+            status="primary"
+            size="small"
+            type="button"
+            (click)="startScanner()"
+            style="
+              position: absolute;
+              right: 6px;
+              top: 50%;
+              transform: translateY(-50%);
+              min-width: 30px;
+              width: 30px;
+              height: 30px;
+              padding: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              z-index: 2;
+            "
+          >
+            <span style="font-size: 16px; line-height: 1;">📷</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label class="label d-block">External Ref Number</label>
+        <input nbInput name="externalref" fullWidth (keydown)="handleOnKeyPress($event)" [(ngModel)]="externalreferenceNumber">
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label class="label d-block">Selling Price</label>
+        <input nbInput readonly fullWidth [value]="sellingPrice">
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label class="label d-block">Warehouse</label>
+        <input nbInput readonly fullWidth [value]="warehouse">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label class="label d-block">Description</label>
+        <input nbInput readonly fullWidth [value]="description">
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="form-group">
+        <label class="label d-block">Quantity</label>
+        <input nbInput readonly fullWidth [value]="quantity">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="scannerOpened" class="scanner-overlay">
+  <div class="scanner-header">
+    <button nbButton status="danger" type="button" (click)="stopScanner()">
+      Close Scanner
+    </button>
+  </div>
+  <div class="scanner-body">
+    <div id="qr-reader"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-3">
+    <img src='{{imageUrl ? imageUrl : "../../../assets/images/noImage.jpg"}}' class="border w-100"
+         alt="placeholder">
+  </div>
+
+  <div class="col-lg-4">
+    <label class="label d-block">Details</label>
+    <div class="bg-white w-100" style="height: 340px; overflow-y: auto">
+      <p>
+        {{details}}
+      </p>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="d-flex mt-4 ml-4">
+      <div class="mr-2">
+        <button nbButton status="primary" (click)="loadPrevious()" [disabled]="rowCount <= 0 || loadingRecord || !referenceNumber ">
+          <img src="assets/images/prev.png" alt="">
+        </button>
+      </div>
+      <div>
+        <button nbButton status="primary" [disabled]="rowCount >= 10 || !referenceNumber || loadingRecord" (click)="loadNext()">
+          <img src="assets/images/next.png" alt="">
+        </button>
+      </div>
+    </div>
+
+    <div class="m-3">
+      <button nbButton status="primary" (click)="generatePDF()" [disabled]="generatingPdf || !warehouse" style="min-width: 167px">
+        <div *ngIf="generatingPdf" class="spinner-border spinner-border-sm text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <span *ngIf="!generatingPdf">Print Data Sheet</span>
+      </button>
+    </div>
+
+    <div class="m-3">
+      <button nbButton status="primary" class="clear-button" (click)="clearData()">Clear</button>
+    </div>
+  </div>
+</div>

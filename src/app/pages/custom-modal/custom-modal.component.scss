@@ -1,0 +1,11 @@
+/* Add custom styles to make the modal larger */
+.custom-modal-size {
+  max-width: 800px; /* Adjust the desired width */
+  width: 90vw;
+  height: 65vh;
+}
+
+button{
+  background: linear-gradient(180deg, hsla(217, 20%, 29%, 1) 0%, hsla(215, 7%, 46%, 1) 100%);
+  border-color: #5e636e !important;
+}

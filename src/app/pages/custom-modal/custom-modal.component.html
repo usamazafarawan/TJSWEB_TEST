@@ -1,0 +1,54 @@
+<nb-card class="custom-modal-size">
+  <nb-card-header>Search Client</nb-card-header>
+  <nb-card-body>
+    <form (ngSubmit)="search()">
+      <div class="row">
+        <div class="col-lg-5">
+          <label class="label d-block">Name/Mobile</label>
+          <input class="mb-1" name="searchQuery" nbInput [(ngModel)]="searchQuery" fullWidth placeholder="Search...">
+        </div>
+        <div class="col-lg-2">
+          <button nbButton status="primary" class="mt-4" fullWidth type="submit" [disabled]="isLoading">
+            <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-light" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span *ngIf="!isLoading">Search</span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Display search results here -->
+<!--    <div *ngIf="searchResults">-->
+      <!-- <table nbTable>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Account Balance</th>
+          <th>Mobile</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let result of searchResults" (click)="selectResult(result)">
+          <td>{{ result.id }}</td>
+          <td>{{ result.name }}</td>
+          <td>{{ result.account_balance }}</td>
+          <td>{{ result.mobile }}</td>
+        </tr>
+      </tbody>
+      </table> -->
+      <nb-card>
+        <nb-card-body class="text-center">
+          <ng2-smart-table [settings]="customModalTableSettings" [source]="customModalTableSources" (userRowSelect)="onRowSelect($event)">
+          </ng2-smart-table>
+        </nb-card-body>
+      </nb-card>
+
+
+<!--    </div>-->
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="primary" (click)="closeModal()">Close</button>
+  </nb-card-footer>
+</nb-card>

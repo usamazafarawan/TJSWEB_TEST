@@ -1,0 +1,148 @@
+<div class="custom-modal-overlay" *ngIf="isModalOpen"></div>
+<!--<button nbButton status="primary" (click)="openModal()">Searh Client</button>-->
+<div class="container-fluid">
+  <div class="d-flex flex-wrap">
+    <div class="mr-3 mb-1">
+      <button type="submit" nbButton status="primary" (click)="openModal()">Change Client</button>
+    </div>
+    <div class="bg-white p-3 border mr-3 mb-1" style="min-height: 130px; width: 350px">
+      <strong>{{name}}</strong><br />
+      <strong *ngIf="balance !== undefined && balance !== null">Balance:USD {{balance}}</strong><br />
+      <strong *ngIf="mobile !== undefined && mobile !== null">Mobile:{{mobile}}</strong><br />
+      <strong *ngIf="email !== undefined && email !== null"> Email:{{email}}</strong>
+    </div>
+    <div class="bg-white p-3 border mb-1" style="height: 60px; overflow-y: auto; ; width: 350px">
+      <strong *ngIf="lastTransaction !== undefined && lastTransaction !== null">Last
+        Transaction: {{lastTransaction}}</strong><br />
+    </div>
+    <div class="ml-2">
+      <div class="form-group">
+        <label class="label mr-2">From</label>
+        <input nbInput [nbDatepicker]="fromdatepicker" [(ngModel)]="fromDate" fieldSize="small">
+      </div>
+      <div class="form-group">
+        <label class="label mr-4">To</label>
+        <input nbInput [nbDatepicker]="todatepicker" [(ngModel)]="toDate" fieldSize="small">
+      </div>
+      <nb-datepicker #fromdatepicker></nb-datepicker>
+      <nb-datepicker #todatepicker></nb-datepicker>
+    </div>
+  </div>
+  <div class="d-flex flex-wrap my-3">
+<!--    <div class="col">-->
+      <button type="submit" style="min-width: 170px" nbButton status="primary" class="mr-3 mb-1"  (click)="loadClientStatement()" [disabled]="loadReport !== null">
+        <div *ngIf="loadReport === 'statement'" class="spinner-border spinner-border-sm text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <span *ngIf="loadReport !== 'statement'">Client Statement</span>
+      </button>
+<!--    </div>-->
+<!--    <div class="col">-->
+      <button type="submit" style="min-width: 170px" nbButton status="primary" class="mr-3 mb-1"  (click)="loadSalesDetails()" [disabled]="loadReport !== null">
+        <div *ngIf="loadReport === 'sales'" class="spinner-border spinner-border-sm text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <span *ngIf="loadReport !== 'sales'">Sales Details</span>
+      </button>
+<!--    </div>-->
+<!--    <div class="col">-->
+      <button type="submit" style="min-width: 170px" nbButton status="primary" class="mb-1"  (click)="loadSalesSummary()" [disabled]="loadReport !== null">
+        <div *ngIf="loadReport === 'summary'" class="spinner-border spinner-border-sm text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <span *ngIf="loadReport !== 'summary'">Sales Summary</span>
+      </button>
+<!--    </div>-->
+  </div>
+  <div style="overflow-x: auto">
+    <nb-card>
+      <nb-card-body class="text-center">
+        <ng2-smart-table [settings]="Client360TableSettings" [source]="Client360TableSource">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+<!--  <div class="row">-->
+<!--    <div class="col-md-3">-->
+<!--      <div class="">-->
+<!--        <button type="submit" nbButton status="primary" (click)="openModal()">Change Client</button>-->
+<!--      </div>-->
+<!--      <div class="row mt-2">-->
+<!--        <div class="col-md-12 mb-2">-->
+<!--          <div class="bg-white w-100 p-3 border" style="height: 130px; overflow-y: auto">-->
+<!--            <strong>{{name}}</strong><br />-->
+<!--            <strong *ngIf="balance !== undefined && balance !== null">Balance:USD {{balance}}</strong><br />-->
+<!--            <strong *ngIf="mobile !== undefined && mobile !== null">Mobile:{{mobile}}</strong><br />-->
+<!--            <strong *ngIf="email !== undefined && email !== null"> Email:{{email}}</strong>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-12 mb-2">-->
+<!--          <div class="bg-white w-100 p-3 border" style="height: 60px; overflow-y: auto">-->
+<!--            <strong *ngIf="lastTransaction !== undefined && lastTransaction !== null">Last-->
+<!--              Transaction: {{lastTransaction}}</strong><br />-->
+
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-12 mb-2">-->
+<!--          <div class="bg-white w-100 border" style="height: 70px; overflow-y: auto">-->
+<!--            <strong>{{address}}</strong><br />-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="col-md-9">-->
+<!--      <div class="row">-->
+<!--        <div class="col">-->
+<!--          <div class="ml-2">-->
+<!--            <div class="form-group">-->
+<!--              <label class="label mr-2">From</label>-->
+<!--              <input nbInput [nbDatepicker]="fromdatepicker" [(ngModel)]="fromDate" fieldSize="small">-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label class="label mr-4">To</label>-->
+<!--              <input nbInput [nbDatepicker]="todatepicker" [(ngModel)]="toDate" fieldSize="small">-->
+<!--            </div>-->
+<!--            <nb-datepicker #fromdatepicker></nb-datepicker>-->
+<!--            <nb-datepicker #todatepicker></nb-datepicker>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col">-->
+<!--          <button type="submit" nbButton status="primary" class="mb-1" fullWidth (click)="loadClientStatement()" [disabled]="loadReport !== null">-->
+<!--            <div *ngIf="loadReport === 'statement'" class="spinner-border spinner-border-sm text-light" role="status">-->
+<!--              <span class="sr-only">Loading...</span>-->
+<!--            </div>-->
+<!--            <span *ngIf="loadReport !== 'statement'">Client Statement</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="col">-->
+<!--          <button type="submit" nbButton status="primary" class="mb-1" fullWidth (click)="loadSalesDetails()" [disabled]="loadReport !== null">-->
+<!--            <div *ngIf="loadReport === 'sales'" class="spinner-border spinner-border-sm text-light" role="status">-->
+<!--              <span class="sr-only">Loading...</span>-->
+<!--            </div>-->
+<!--            <span *ngIf="loadReport !== 'sales'">Sales Details</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="col">-->
+<!--          <button type="submit" nbButton status="primary" class="mb-1" fullWidth (click)="loadSalesSummary()" [disabled]="loadReport !== null">-->
+<!--            <div *ngIf="loadReport === 'summary'" class="spinner-border spinner-border-sm text-light" role="status">-->
+<!--              <span class="sr-only">Loading...</span>-->
+<!--            </div>-->
+<!--            <span *ngIf="loadReport !== 'summary'">Sales Summary</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="col">-->
+<!--&lt;!&ndash;          <nb-checkbox [(ngModel)]="excludeHiddenTrans" [checked]="excludeHiddenTrans">Exclude Hidden&ndash;&gt;-->
+<!--&lt;!&ndash;            Transactions</nb-checkbox>&ndash;&gt;-->
+<!--        </div>-->
+<!--        <div class="col-md-12" style="overflow-x: auto">-->
+<!--          <nb-card>-->
+<!--            <nb-card-body class="text-center">-->
+<!--              <ng2-smart-table [settings]="Client360TableSettings" [source]="Client360TableSource">-->
+<!--              </ng2-smart-table>-->
+<!--            </nb-card-body>-->
+<!--          </nb-card>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+</div>

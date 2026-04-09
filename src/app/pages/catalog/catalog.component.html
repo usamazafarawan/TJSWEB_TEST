@@ -1,0 +1,144 @@
+<div class="row" [nbSpinner]="filtersLoaded !== true" nbSpinnerSize="giant"
+     nbSpinnerStatus="primary">
+  <!-- Filters -->
+  <div class="d-flex">
+    <div class="form-group px-2 ">
+      <label class="label">Item Entry Date</label>
+      <div class="d-flex align-items-center">
+        <div>
+          <!--                    <button nbButton status="primary" class="p-1">All Dates</button>-->
+          <nb-checkbox class="appearance-filled full-width size-medium shape-rectangle status-primary nb-transition"
+                       [(ngModel)]="allDates" [(checked)]="allDates">All Dates
+          </nb-checkbox>
+
+        </div>
+        <div class="ml-2">
+          <div class="form-group">
+            <label class="label mr-2">From</label>
+            <input nbInput [nbDatepicker]="fromdatepicker" [(ngModel)]="fromDate" fieldSize="small">
+          </div>
+          <div class="form-group">
+            <label class="label mr-4 ">To</label>
+            <input nbInput [nbDatepicker]="todatepicker" [(ngModel)]="toDate" fieldSize="small">
+          </div>
+          <nb-datepicker #fromdatepicker></nb-datepicker>
+          <nb-datepicker #todatepicker></nb-datepicker>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+
+    <div class="form-group mb-1">
+      <label class="label d-block">Category</label>
+      <nb-select fullWidth [(ngModel)]="selectedCategory">
+        <nb-option *ngFor="let category of categories" [value]="category['ID']">{{ category['Category'] }}</nb-option>
+      </nb-select>
+    </div>
+    <div class="form-group">
+      <label class="label d-block">Description</label>
+      <input nbInput name="description" [(ngModel)]="description" fullWidth>
+    </div>
+
+  </div>
+  <div class="col-md-2">
+    <div class="form-group mb-1">
+      <label class="label d-block">Collection</label>
+      <nb-select fullWidth [(ngModel)]="selectedCollection">
+        <nb-option *ngFor="let col of collections" [value]="col">{{ col }}</nb-option>
+      </nb-select>
+    </div>
+    <div class="form-group">
+      <label class="label d-block">Barcode</label>
+      <input nbInput name="barcode" [(ngModel)]="barcode" fullWidth>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="form-group mb-1">
+      <label class="label d-block">Supplier</label>
+      <nb-select fullWidth [(ngModel)]="selectedSupplier">
+        <nb-option *ngFor="let supplier of suppliers" [value]="supplier['ID']">{{ supplier['Name'] }}</nb-option>
+      </nb-select>
+    </div>
+    <div class="form-group">
+      <label class="label d-block">Warehouse</label>
+      <nb-select fullWidth [(ngModel)]="selectedWarehouse">
+        <nb-option *ngFor="let col of warehouses" [value]="col">{{ col }}</nb-option>
+      </nb-select>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <label class="label">Quantity</label>
+    <nb-radio-group name="quantity" [(ngModel)]="quantity">
+      <nb-radio value="greaterThanZero"> > 0</nb-radio>
+      <nb-radio value="all">All</nb-radio>
+      <nb-radio value="lessThanNumber">
+        <= <input [disabled]="quantity !== 'lessThanNumber'" nbInput class="w-25 border" fieldSize="small"
+                  name="quantityLessThan" [(ngModel)]="quantityLessThan"
+                  placeholder="0"
+      >
+      </nb-radio>
+    </nb-radio-group>
+  </div>
+  <div class="col">
+    <button type="submit" nbButton status="primary" [disabled]="loadingReports" style="max-width: 134px;" fullWidth
+            (click)="loadReports()">
+      <div *ngIf="loadingReports" class="spinner-border spinner-border-sm text-light" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <span *ngIf="!loadingReports">Load Report</span>
+    </button>
+  </div>
+  <div class="col-md-2">
+    <label class="label d-block">Price Range</label>
+    <nb-checkbox [(ngModel)]="isLabourSelling" [checked]="isLabourSelling">Labour Selling</nb-checkbox>
+    <nb-radio-group [(ngModel)]="selectedPriceRadio">
+      <nb-radio value="greaterThanNumber">
+        >= <input nbInput class="w-50 border" [disabled]="selectedPriceRadio !== 'greaterThanNumber'"
+                  fieldSize="small" [(ngModel)]="priceGreaterThan" placeholder="0.00">
+      </nb-radio>
+      <nb-radio value="lessThanNumber">
+        <= <input nbInput class="w-50 border" fieldSize="small" [disabled]="selectedPriceRadio !== 'lessThanNumber'"
+                  [(ngModel)]="priceLessThan" placeholder="0.00">
+      </nb-radio>
+    </nb-radio-group>
+  </div>
+  <div class="col-md-2">
+    <label class="label">Type</label>
+    <nb-radio-group name="type" [(ngModel)]="type">
+      <nb-radio value="all"> All</nb-radio>
+      <nb-radio value="diamond">Diamond Items</nb-radio>
+      <nb-radio value="gold">Gold Items</nb-radio>
+    </nb-radio-group>
+  </div>
+  <div class="col-md-2">
+    <label class="label">Currency</label>
+    <nb-radio-group name="currency" [(ngModel)]="currency">
+      <nb-radio value="all"> All</nb-radio>
+      <nb-radio value="primary">Primary</nb-radio>
+      <nb-radio value="secondary">Secondary</nb-radio>
+    </nb-radio-group>
+  </div>
+
+  <!-- <div class="col">
+  <label class="label">Quantity</label>
+  <nb-radio-group>
+    <nb-radio value="greaterThanZero"> > 0 </nb-radio>
+    <nb-radio value="all">All</nb-radio>
+    <nb-radio value="greaterThanNumber">
+      <= <input nbInput class="w-25" fieldSize="small">
+    </nb-radio>
+  </nb-radio-group>
+</div> -->
+
+</div>
+<div>
+  <div style="overflow-x: auto">
+    <nb-card>
+      <nb-card-body class="text-center">
+        <ng2-smart-table [settings]="catalogReportTableSettings" [source]="catalogReportTableSources">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

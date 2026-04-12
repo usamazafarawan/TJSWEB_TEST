@@ -54,7 +54,7 @@ import { AdminGuard } from './auth/admin.guard';
           //baseEndpoint: 'http://72.167.42.235:3000',
           //baseEndpoint: 'http://localhost:3000',
           // baseEndpoint: 'http://portal.thejewelsoftware.com:3000',
-          baseEndpoint: 'http://portal.thejewelsoftware.com:3000',
+          baseEndpoint: 'https://tjsweb-test-backend.vercel.app',
           login: {
             endpoint: '/api/auth/login',
             redirect: {

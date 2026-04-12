@@ -53,6 +53,7 @@ import { AdminGuard } from './auth/admin.guard';
           // baseEndpoint: `${window.location.protocol}//${window.location.hostname}:3000`,
           //baseEndpoint: 'http://72.167.42.235:3000',
           //baseEndpoint: 'http://localhost:3000',
+          // baseEndpoint: 'http://portal.thejewelsoftware.com:3000',
           baseEndpoint: 'http://portal.thejewelsoftware.com:3000',
           login: {
             endpoint: '/api/auth/login',

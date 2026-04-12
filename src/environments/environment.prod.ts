@@ -9,6 +9,8 @@ export const environment = {
   //api_base_url : 'http://72.167.42.235:3000/api/data',
   //api_base_url : 'http://localhost:3000/api/data',
   //  api_base_url: `${window.location.protocol}//${window.location.hostname}:3000/api/data`
-             api_base_url: 'http://portal.thejewelsoftware.com:3000/api/data',
+            //  api_base_url: 'http://portal.thejewelsoftware.com:3000/api/data',
+            api_base_url: 'https://tjsweb-test-backend.vercel.app/api/data',
+
 
 };
